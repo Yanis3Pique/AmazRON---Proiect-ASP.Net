@@ -1,0 +1,26 @@
+﻿@model AmazRON.Models.UserProduct
+
+
+@{
+    ViewBag.Title = "Editare produs din cos";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm(controllerName: "UserProducts", actionName: "Edit", method: FormMethod.Post,
+      routeValues: new { id = Model.Id }))
+{
+    @Html.Label("Bucati", "Bucati")
+    <br />
+    @Html.Editor("Bucati")
+
+    @Html.ValidationMessageFor(m => m.Bucati, null, new { @class = "text-danger" })
+    <br />
+
+    <br />
+
+    <button class="btn btn-success" type="submit">Modifica categoria</button>
+}
+
+

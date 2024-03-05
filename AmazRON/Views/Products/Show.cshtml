@@ -1,0 +1,137 @@
+﻿
+@model AmazRON.Models.Product
+
+@* Afisarea unui produs impreuna cu categoria din care face *@
+
+@if (TempData["message"] != null)
+{
+    <div class="alert @ViewBag.Alert p-3 rounded-3 text-center mb-5">
+        @ViewBag.Message
+    </div>
+}
+<br />
+
+<div class="container d-flex justify-content-center">
+    <figure class="card card-product-grid card-lg">
+
+        @Html.Partial("ProductInfo", Model)
+
+
+        <div class="card-body">
+
+            <p class="card-text">@Html.Raw(Model.Description)</p>
+
+        </div>
+
+        @if (ViewBag.AfisareButoane == true && Model.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
+        {
+
+
+                <div class="bottom-wrap">
+                    <div class="d-flex flex-row justify-content-between">
+                        <a class="btn btn-success" href="/Products/Edit/@Model.Id">Editeaza produs</a>
+
+                        <form method="post" action="/Products/Delete/@Model.Id">
+
+                            <button class="btn btn-danger" type="submit">Sterge produs</button>
+
+                        </form>
+                    </div>
+                </div>
+        }
+
+        @Html.Partial("ProductActions", Model)
+                              
+    </figure>
+</div>
+<br/>
+<div class="container d-flex justify-content-center">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">
+        Adaugă un review
+    </button>
+</div>
+
+@* Afisare review-uri impreuna cu butoanele de editare si stergere *@
+@foreach (var review in Model.Reviews)
+{
+    <div class="container d-flex justify-content-center">
+        <figure class="card card-product-grid card-lg">
+            <figcaption class="info-wrap">
+                <div class="row">
+                    <div class="col-md-8 col-xs-8">
+                        <small class="title">@review.Content</small>
+                        <br/>
+                        <span class="rated">@review.User.Email - @review.Date.ToString().Split(" ")[0]</span>
+                    </div>
+                    <div class="col-md-4 col-xs-4">
+                        <div class="rating text-right">
+                            @for (int i = 0; i < review.Rating; i++)
+                            {
+                                <i class="fa fa-star"></i>
+                            }
+                        </div>
+                    </div>
+
+                    @if (review.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
+                    {
+                        <div class="d-flex">
+                            <div>
+                                <a class="btn btn-outline-primary" href="/Reviews/Edit/@review.Id"><i class="bi bi-pencil-square"></i>Editeaza</a>
+                            </div>
+                            <div>
+                                <form method="post" action="/Reviews/Delete/@review.Id">
+                                    <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Sterge</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </figcaption>
+        </figure>
+    </div>
+}
+
+
+
+
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel">Adaugă un review</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="/Products/Show/@Model.Id">
+            <div class="modal-body">
+
+                    
+
+                        <div class="card-body">
+
+                            <input type="hidden" name="ProductId" value="@Model.Id" />
+
+                            @Html.Label("Content", "Continut")
+                            <br />
+
+                            @Html.TextArea("Content", null, new { @class = "form-control" })
+                            @Html.ValidationMessage("Content", null, new { @class = "text-danger"})
+                            <br />
+                            @Html.Label("Rating", "Rating")
+                            <br />
+                            @Html.TextBox("Rating", null, new { @class = "form-control", type = "number", step = "1",  })
+                            @Html.ValidationMessage("Rating", null, new { @class = "text-danger"})
+
+                        </div>
+
+                    
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Închide</button>
+                <button type="submit" class="btn btn-primary">Adaugă</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

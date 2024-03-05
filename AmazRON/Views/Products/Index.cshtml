@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+
+<h2 class="text-center">Produse</h2>
+
+<br />
+
+@if (TempData["message"] != null)
+{
+    <div class="alert @ViewBag.Alert p-3 rounded-3 text-center mb-5">
+        @ViewBag.Message
+    </div>
+}
+
+<form method="GET">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control"
+               placeholder="Search topics or keywords" name="search"
+               value="@ViewBag.SearchString">
+        <button class="btn btn-outline-success"
+                type="submit">
+            Caută
+        </button>
+
+    </div>
+    <br />
+
+    <label>Sortare după</label>
+    @Html.DropDownList("sort", new SelectList(ViewBag.listaSortare, "Value", "Text", ViewBag.sortProp), null, new { @class = "form-control" })
+
+    <label>Ordonare</label>
+    @Html.DropDownList("order", new SelectList(ViewBag.listaOrdonare, "Value", "Text", ViewBag.orderProp), null, new { @class = "form-control" })
+    <button class="btn btn-outline-success"
+            type="submit">
+        Caută
+    </button>
+
+    <div>
+        <br />
+        <div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <button class="page-link" type="submit" name="page" value="1" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+
+                    @for (int i = 1; i <= ViewBag.lastPage; i++)
+                    {
+                        <li class="page-item">
+                            <button class="page-link" type="submit" name="page" value="@i" aria-label="Previous">
+                                @(i)
+                            </button>
+                        </li>
+                    }
+
+                    <li class="page-item">
+                        <button class="page-link" type="submit" name="page" value="@(ViewBag.lastPage)" aria-label="Previous">
+                            <span aria-hidden="true">&raquo;</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</form>
+
+<br />
+<div class="row row-cols-1 row-cols-md-2 g-4">
+
+    @foreach (AmazRON.Models.Product product in ViewBag.Products)
+    {
+
+        <div class="container d-flex justify-content-center">
+            <figure class="card d-flex flex-column  card-product-grid card-lg">
+
+                @Html.Partial("ProductInfo", product )
+                <div class="flex-grow-1"></div>
+                @Html.Partial("ProductActions", product)
+            </figure>
+        </div>
+    }
+</div>

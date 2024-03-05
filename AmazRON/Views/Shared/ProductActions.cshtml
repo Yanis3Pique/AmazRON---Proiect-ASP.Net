@@ -1,0 +1,59 @@
+﻿
+@model AmazRON.Models.Product
+
+@if (Model.Pending && User.IsInRole("Administrator"))
+{
+    <div class="card-footer">
+        <div class="d-flex justify-content-around">
+            <form method="post" action="/Products/Accept/@Model.Id">
+
+                <button type="submit" class="btn btn-success">Accepta</button>
+
+            </form>
+            
+            <form method="post" action="/Products/Refuz/@Model.Id">
+                <button type="submit" class="btn btn-danger">Refuza</button>
+            </form>
+
+        </div>
+
+    </div>
+}
+else if (Model.Accepted)
+{
+    @if (Model.Stoc > 0)
+    {
+        <div class="card-footer">
+            <div class="d-flex justify-content-around">
+                <form method="post" action="/UserProducts/New">
+                    <input type="hidden" name="ProductId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-success"><i class="bi bi-cart"></i>Adauga in cos</button>
+                </form>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div class="card-footer">
+            <div class="d-flex justify-content-around">
+                <button disabled class="btn btn-danger"><i class="bi bi-cart"></i>Adauga in cos</button>
+            </div>
+
+        </div>
+    }
+}
+
+@if (User.IsInRole("Administrator") || User.IsInRole("Colaborator"))
+{
+    <div class="card-footer">
+        <div class="d-flex justify-content-around">
+            <small><i class="bi bi-person-circle"></i> @Model.User.UserName</small>
+
+            <small class="alert-success">@Model.Date</small>
+        </div>
+
+    </div>
+}
+

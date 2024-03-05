@@ -1,0 +1,38 @@
+﻿
+@model AmazRON.Models.Product
+
+
+@if (Model.Pending)
+{
+    <h3 class="card-title text-center alert-danger">IN ASTEPTARE</h3>
+}
+<a href="/Products/Show/@Model.Id" class="img-wrap" data-abc="true"> <img src="@Model.Photo" class="rounded mx-auto d-block" style="height:240px"> </a>
+<figcaption class="info-wrap">
+    <div class="row">
+        <div class="col-md-8 col-xs-8"> <a href="/Products/Show/@Model.Id" class="title" data-abc="true">@Model.Title</a> <span class="rated">@Model.Category.CategoryName</span> </div>
+        <div class="col-md-4 col-xs-4">
+            <div class="rating text-right">
+                @for (int i = 0; i < (int)Model.Rating; i++)
+                {
+                    <i class="fa fa-star"></i>
+                }
+                @for (int i = 5; i > (int)Model.Rating; i--)
+                {
+                    <i class="fa-regular fa-star"></i>
+                }
+
+            </div>
+        </div>
+    </div>
+</figcaption>
+<div class="bottom-wrap-payment">
+    <figcaption class="info-wrap">
+        <div class="row">
+            <div class="col-md-9 col-xs-9"> <a href="/Products/Show/@Model.Id" class="title" data-abc="true">RON @Model.Price</a> </div>
+            <div class="col-md-3 col-xs-3">
+                <div class="rating text-right"> Stoc: <b>@Model.Stoc</b> </div>
+            </div>
+        </div>
+
+    </figcaption>
+</div>

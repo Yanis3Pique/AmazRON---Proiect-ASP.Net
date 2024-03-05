@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Cos de cumparaturi";
+}
+
+<h2>@ViewBag.Title</h2>
+<br />
+
+@if (TempData["message"] != null)
+{
+    <div class="alert @ViewBag.Alert p-3 rounded-3 text-center mb-5">
+        @ViewBag.Message
+    </div>
+}
+
+
+<br />
+
+@foreach (var userProduct in ViewBag.Cos)
+{
+    @Html.Label("Title", "Denumire Produs")
+    <p>@userProduct.Product.Title</p>
+    @Html.Label("Bucati", "Numar bucati")
+    <p>@userProduct.Bucati</p>
+    <a class="btn alert-success" href="/UserProducts/Edit/@userProduct.Id">Editeaza</a>
+    <a class="btn alert-success" href="/UserProducts/Delete/@userProduct.Id">Sterge</a>
+    <br />
+    <hr />
+    <br />
+}
+<br />
